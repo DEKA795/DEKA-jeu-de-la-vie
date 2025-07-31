@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Maxer Mes Stats - Mental</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="logo.png">
+  <style>
+    html, body { margin: 0; padding: 0; width: 100vw; height: 100vh; box-sizing: border-box; }
+    body { display: flex; flex-direction: column; align-items: center; background: #1e0f16; color: #fff; font-family: 'Segoe UI', Arial, sans-serif; }
+    .container { width: 100%; max-width: 1700px; margin: 0 auto; padding: 16px 2vw 50px 2vw; display: flex; flex-direction: column; align-items: center; }
+    h1 { text-align: center; color: #B71C3A; margin-top: 24px; font-size: 2.2em; letter-spacing: 2px; font-weight: 800; text-shadow: 0 2px 16px #b71c3a55; }
+    .return-btn { display: block; margin: 18px auto 12px auto; background: #B71C3A; color: #fff; padding: 12px 22px; border-radius: 16px; font-weight: bold; font-size: 1em; border: none; cursor: pointer; max-width: 200px; width: 90vw; text-align: center; outline: none; box-shadow: 0 0 14px #ffcf57, 0 0 30px #ffcf5720; transition: background 0.18s, box-shadow 0.18s; }
+    .return-btn:hover { background: #5c2741; box-shadow: 0 0 18px #ffd74d, 0 0 34px #ffeb3b70; }
+    .cat-section { margin-top: 34px; background: #331b26bb; border-radius: 16px; box-shadow: 0 0 12px #b71c3a33; padding-bottom: 10px; width: 100vw; max-width: none;margin-left: calc(-1 * ((100vw - 100%) / 2)); padding: 1rem; box-sizing: border-box;}
+    .cat-title { font-size: 1.5em; padding: 18px 0 6px 14px; font-weight: 800; letter-spacing: 2px; text-shadow: 0 2px 16px #b71c3a55; margin: 0; display: flex; align-items: center; gap: 8px; }
+    .exo-block { width: 96%; background: none; margin: 18px auto 18px auto; padding-bottom: 8px; border-bottom: 1px solid #4c2938; }
+    .input-label { font-weight: bold; font-size: 1.06em; margin-bottom: 3px; display: block;}
+    .input-row { display: flex; align-items: center; gap: 8px; }
+    input[type=number] { width: 78px; padding: 6px 7px; border-radius: 6px; border: 1.4px solid #B71C3A; background: #fff; color: #B71C3A; font-size: 1em; font-weight: bold; outline: none; transition: border 0.2s; }
+    input[type=number]::placeholder { font-style: italic; color: #B71C3A99; opacity: 0.6; font-weight: 600; }
+    .exo-unite { color: #f5e8e8; font-style: italic; font-size: 1em;}
+    .progress-bar-container { width: 96%; height: 16px; background: #544055; border-radius: 10px; margin: 7px 0 0 0; overflow: hidden; border: 1.5px solid #b71c3a; position: relative; box-shadow: 0 1px 8px #0002;}
+    .progress-bar { height: 100%; border-radius: 10px; transition: width 0.33s, background 0.33s; min-width: 5px;}
+    .bar-grey { background: #bcbcbc; }
+    .bar-green { background: #84ffb1; }
+    .bar-darkgreen { background: #3be57c; }
+    .bar-purple { background: #b76eff; }
+    .bar-gold { background: #ffd700; }
+    .lvl-grey { color: #bcbcbc; }
+    .lvl-green { color: #84ffb1; }
+    .lvl-darkgreen { color: #3be57c; }
+    .lvl-purple { color: #b76eff; }
+    .lvl-gold { color: #ffd700; }
+    .lvl-cell { font-size: 1.06em; font-weight: bold; letter-spacing: 1px; transition: color 0.3s; margin-left: 10px;}
+    .palier { font-size: 0.92em; font-style: italic; opacity: 0.72; margin-left: 6px;}
+    .motivation { display: block; font-size: 1em; margin-top: 4px; margin-bottom: 2px; font-weight: 600;}
+    .actions { display: flex; justify-content: center; gap: 18px; margin: 30px 0 10px 0; flex-wrap: wrap;}
+    button { background: #B71C3A; color: #fff; border: none; border-radius: 8px; padding: 8px 17px; font-size: 1em; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px #ffcf57, 0 0 22px #ffcf5720; transition: background 0.22s, box-shadow 0.22s; }
+    button:hover { background: #881329; box-shadow: 0 0 18px #ffd74d, 0 0 34px #ffeb3b70; }
+
+    .music-checkboxes {
+      margin-top: 7px; margin-bottom: 6px; display: flex; flex-wrap: wrap; gap: 10px 16px;
+    }
+    .music-checkbox-chip {
+      background: #25132b;
+      color: #ffd700bb;
+      border-radius: 20px;
+      border: 2px solid #59407c;
+      padding: 7px 19px 7px 14px;
+      font-size: 1em;
+      font-weight: 500;
+      margin-right: 0px;
+      margin-bottom: 2px;
+      transition: all .18s;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 1px 6px #b76eff33;
+      user-select: none;
+    }
+    .music-checkbox-chip.selected,
+    .music-checkbox-chip input:checked + span {
+      background: #ffd700;
+      color: #331b26;
+      border-color: #ffd700;
+      font-weight: bold;
+      box-shadow: 0 0 7px #ffd70088;
+    }
+    .music-checkbox-chip:hover {
+      background: #b76eff22;
+      border-color: #b76eff;
+      color: #ffd700;
+    }
+    .music-checkbox-chip input {
+      display: none;
+    }
+    .little-note {
+      font-size: 0.92em; color: #999; font-style: italic; margin-top: 2px; margin-bottom: 10px; display: block;
+    }
+    @media (max-width: 700px) { .container { max-width: 100vw; padding: 6px 0 60px 0; } h1 { font-size: 1.35em; } .cat-title { font-size: 1.08em; } input[type=number] { width: 54px;} .progress-bar-container { height: 12px;} .music-checkboxes{gap:5px 6px;} }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <button class="return-btn neon-btn" onclick="window.history.back();">Retour</button>
+    <h1>🎯 MAXER VOS STATS - Mental</h1>
+    <div class="actions">
+      <button class="neon-btn" onclick="copyNotion()">📋copier vos niveaux </button>
+    </div>
+    <div id="sections"></div>
+  </div>
+  <script>
+    const MAX_LVL = 100;
+    function getLvl50(n0, n100, type) {
+      n0 = Number(n0); n100 = Number(n100);
+      if(type === "plus") return Math.round(n0 + (n100-n0)/2);
+      else return Math.round(n0 - (n0-n100)/2);
+    }
+    const categories = [
+      {
+        emoji: "🌍", titre: "Culture Générale", color: "#3F51B5", exos: [
+          { nom: "Pays du monde connus", unite: "pays", n0: 0, n100: 198, type: "plus", note: "" },
+          { nom: "Films vus (classiques/cultes)", unite: "films", n0: 0, n100: 100, type: "plus", note: "Retourne sur le notion pour avoir la liste des films." },
+          { nom: "Musiques découvertes", unite: "", n0: 0, n100: 0, type: "music-checkbox", note: "Retourne sur le notion pour avoir la liste des musiques." }
+        ]
+      },
+      {
+        emoji: "📚", titre: "Apprentissages", color: "#009688", exos: [
+          { nom: "Livres lus", unite: "livres", n0: 0, n100: 200, type: "plus", note: "Retourne sur le notion pour avoir la liste des livres." },
+          { nom: "Podcasts écoutés", unite: "épisodes", n0: 0, n100: 40, type: "plus", note: "Retourne sur le notion pour avoir la liste des podcasts." },
+          { nom: "Vidéos éducatives", unite: "vidéos", n0: 0, n100: 50, type: "plus", note: "Retourne sur le notion pour avoir la liste des vidéos." }
+        ]
+      },
+      {
+        emoji: "🧩", titre: "Cognition", color: "#8E24AA", exos: [
+          { nom: "Échecs (ELO)", unite: "elo", n0: 400, n100: 1700, type: "plus", note: "" },
+          { nom: "Rubik's Cube", unite: "sec", n0: 200, n100: 22, type: "moins", note: "" },
+          { nom: "Taper sur clavier (WPM)", unite: "mots/min", n0: 0, n100: 70, type: "plus", note: "" }
+        ]
+      }
+    ];
+    categories.forEach(cat => {
+      cat.exos.forEach(exo => {
+        if(exo.type === "plus" || exo.type === "moins") {
+          exo.placeholder = "ex: " + getLvl50(exo.n0, exo.n100, exo.type);
+        }
+      });
+    });
+    function createSection(cat) {
+      let html = `<div class="cat-section"><div class="cat-title">${cat.emoji} <span style="color:${cat.color}">${cat.titre}</span></div>`;
+      cat.exos.forEach((exo, i) => {
+        let id = `${cat.titre.toLowerCase().replace(/ /g, '_')}-${i}`;
+        html += `<div class="exo-block">`;
+        html += `<label class="input-label" for="perf-${id}">${exo.nom}</label>`;
+        if(exo.type === "music-checkbox") {
+          html += `<div class="music-checkboxes">
+            ${musicCheckbox("music-pop", "Pop")}
+            ${musicCheckbox("music-rock", "Rock")}
+            ${musicCheckbox("music-hiphop", "Hip Hop/Rap")}
+            ${musicCheckbox("music-jazz", "Jazz")}
+            ${musicCheckbox("music-rnb", "R&B / Soul / Funk")}
+            ${musicCheckbox("music-country", "Country")}
+            ${musicCheckbox("music-edm", "Electronic / EDM")}
+            ${musicCheckbox("music-latin", "Latin / Reggaeton")}
+            ${musicCheckbox("music-classical", "Classical")}
+          </div>`;
+        } else {
+          html += `<div class="input-row">
+            <input type="number" min="0" step="any" id="perf-${id}" placeholder="${exo.placeholder || ''}" oninput="calcLvl('${cat.titre}',${i})">
+            <span class="exo-unite">${exo.unite}</span>
+            <span id="lvl-${id}" class="lvl-cell lvl-grey">lvl ?</span>
+            <span id="palier-${id}" class="palier"></span>
+          </div>
+          <div class="progress-bar-container">
+            <div id="bar-${id}" class="progress-bar bar-grey" style="width:0%"></div>
+          </div>
+          <span id="motivation-${id}" class="motivation"></span>`;
+        }
+        if(exo.note) {
+          html += `<span class="little-note">${exo.note}</span>`;
+        }
+        html += `</div>`;
+      });
+      html += "</div>";
+      return html;
+    }
+
+    // Génération des cases à cocher musique
+    function musicCheckbox(id, label) {
+      return `<label class="music-checkbox-chip">
+        <input type="checkbox" id="${id}" onchange="toggleMusicChip(this)">
+        <span>${label}</span>
+      </label>`;
+    }
+    window.toggleMusicChip = function(checkbox) {
+      const label = checkbox.parentElement;
+      if(checkbox.checked) label.classList.add("selected");
+      else label.classList.remove("selected");
+    }
+
+    document.getElementById("sections").innerHTML = categories.map(createSection).join("");
+
+    function calcLvl(catName, exoIdx) {
+      const cat = categories.find(c => c.titre === catName);
+      const exo = cat.exos[exoIdx];
+      const id = `${cat.titre.toLowerCase().replace(/ /g, '_')}-${exoIdx}`;
+      const input = document.getElementById(`perf-${id}`);
+      let perf = parseFloat(input && input.value ? input.value.replace(',', '.') : '');
+      let lvl = "?", percent = 0, bar = "bar-grey", color = "lvl-grey";
+      let message = "";
+      let palierText = `lvl 100 = ${exo.n100} ${exo.unite}`;
+      if (!input || isNaN(perf) || perf === 0) {
+        lvl = "?";
+        percent = 0;
+        bar = "bar-grey";
+        color = "lvl-grey";
+        message = "";
+      } else {
+        if (exo.type === "plus") {
+          lvl = Math.round(((perf - exo.n0) / (exo.n100 - exo.n0)) * MAX_LVL);
+        } else {
+          lvl = Math.round(((exo.n0 - perf) / (exo.n0 - exo.n100)) * MAX_LVL);
+        }
+        if (lvl < 0) lvl = 0;
+        if (lvl > MAX_LVL) lvl = MAX_LVL;
+        percent = (lvl / MAX_LVL) * 100;
+        if (lvl >= 90) { bar = "bar-gold"; color = "lvl-gold"; }
+        else if (lvl >= 50) { bar = "bar-purple"; color = "lvl-purple"; }
+        else if (lvl >= 30) { bar = "bar-darkgreen"; color = "lvl-darkgreen"; }
+        else if (lvl > 0) { bar = "bar-green"; color = "lvl-green"; }
+        else { bar = "bar-grey"; color = "lvl-grey"; }
+        if (lvl < 30) message = "<span style='color:#84ffb1;'>🚦 Ce n'est que le début !</span>";
+        else if (lvl < 50) message = "<span style='color:#3be57c;'>🔝 Incroyable déjà !</span>";
+        else if (lvl < 90) message = "<span style='color:#b76eff;'>⚡ Meilleur que la plupart !</span>";
+        else message = "<span style='color:#ffd700;'>🏆 Champion ! N'hésite pas à flex !</span>";
+      }
+      if (input) {
+        document.getElementById(`lvl-${id}`).innerHTML = `<span class='${color}'>lvl ${lvl}</span>`;
+        document.getElementById(`bar-${id}`).className = `progress-bar ${bar}`;
+        document.getElementById(`bar-${id}`).style.width = percent + "%";
+        document.getElementById(`palier-${id}`).innerHTML = palierText;
+        document.getElementById(`motivation-${id}`).innerHTML = message;
+      }
+    }
+    window.calcLvl = calcLvl;
+    function emojiBar(percent) {
+      let filled = Math.round(percent / 10);
+      let empty = 10 - filled;
+      if (percent === 0) return "⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜";
+      if (percent < 100)  return "🟩".repeat(filled) + "⬜".repeat(empty);
+      if (percent >= 100) return "⭐".repeat(filled) + "⬜".repeat(empty);
+    }
+    function notionExport() {
+      let total = 0;
+      let out = "";
+      categories.forEach(cat => {
+        cat.exos.forEach((exo, i) => {
+          if(exo.type === "plus" || exo.type === "moins") {
+            const id = `${cat.titre.toLowerCase().replace(/ /g, '_')}-${i}`;
+            let lvlTxt = document.getElementById(`lvl-${id}`).innerText.trim();
+            let val = parseInt(lvlTxt.replace("lvl", "").replace("?", "0"));
+            if (!isNaN(val)) total += val;
+          }
+        });
+      });
+      out += `LVL TOTAL MENTAL : ${total}\n\n`;
+      categories.forEach(cat => {
+        out += `${cat.emoji} ${cat.titre}\n`;
+        cat.exos.forEach((exo, i) => {
+          if(exo.type === "plus" || exo.type === "moins") {
+            const id = `${cat.titre.toLowerCase().replace(/ /g, '_')}-${i}`;
+            let val = document.getElementById(`perf-${id}`)?.value;
+            let lvlTxt = document.getElementById(`lvl-${id}`)?.innerText.trim();
+            let barPercent = parseInt(document.getElementById(`bar-${id}`)?.style.width) || 0;
+            let bar = emojiBar(barPercent);
+            out += `- ${exo.nom} (${val ? val : "?"} ${exo.unite}) — ${lvlTxt}\n  Progression : ${bar}\n`;
+          }
+          if(exo.type === "music-checkbox") {
+            let checked = [];
+            if(document.getElementById("music-pop")?.checked) checked.push("Pop");
+            if(document.getElementById("music-rock")?.checked) checked.push("Rock");
+            if(document.getElementById("music-hiphop")?.checked) checked.push("Hip Hop/Rap");
+            if(document.getElementById("music-jazz")?.checked) checked.push("Jazz");
+            if(document.getElementById("music-rnb")?.checked) checked.push("R&B / Soul / Funk");
+            if(document.getElementById("music-country")?.checked) checked.push("Country");
+            if(document.getElementById("music-edm")?.checked) checked.push("Electronic / EDM");
+            if(document.getElementById("music-latin")?.checked) checked.push("Latin / Reggaeton");
+            if(document.getElementById("music-classical")?.checked) checked.push("Classical");
+            out += `- Styles cochés : ${checked.join(", ") || "Aucun"}\n`;
+          }
+        });
+        out += "\n\n";
+      });
+      return out;
+    }
+    function copyNotion() {
+      navigator.clipboard.writeText(notionExport());
+      alert("✨ Copié au format Notion ! Va dans une page Notion et colle avec Ctrl+V 👌");
+    }
+  </script>
+</body>
+</html>
